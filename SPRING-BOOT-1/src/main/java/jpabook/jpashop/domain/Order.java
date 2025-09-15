@@ -75,6 +75,7 @@ public class Order {
 
         this.status = OrderStatus.CANCEL;
         for (OrderItem orderItem : orderItems) {
+            System.out.println(orderItem);
             orderItem.cancel();
         }
     }
