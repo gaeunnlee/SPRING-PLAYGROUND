@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.crud_ex.mapper.MemberMapper">
+
+    <select id="findAll" resultType="org.crud_ex.domain.MemberVO">
+        SELECT * FROM member
+    </select>
+
+    <select id="findByUserno" parameterType="int" resultType="org.crud_ex.domain.MemberVO">
+        SELECT * FROM member WHERE userno = #{userno}
+    </select>
+
+    <insert id="insert" parameterType="org.crud_ex.domain.MemberVO">
+        INSERT INTO member(userno, name, age) VALUES (#{userno}, #{name}, #{age})
+    </insert>
+
+    <update id="update" parameterType="org.crud_ex.domain.MemberVO">
+        UPDATE member SET name = #{name} WHERE userno = #{userno}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM member WHERE userno = #{userno}
+    </delete>
+
+</mapper>
