@@ -10,19 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaa1de9a-97c2-4cf0-b857-9033ae242cab" name="Changes" comment="chore: Spring Legacy MyBatis 환경 설정">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/crud_ex/config/MvcConfig.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/crud_ex/controller/MemberController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/crud_ex/domain/MemberVO.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/crud_ex/mapper/MemberMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/mapper/member-mapper.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/member/detail.jsp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/member/edit.jsp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/member/list.jsp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/member/new.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/spring/root-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/spring/root-context.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/spring/servlet-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/spring/servlet-context.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/member-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/member-mapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +196,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1767010583288</updated>
-      <workItem from="1767010584264" duration="4539000" />
+      <workItem from="1767010584264" duration="5111000" />
     </task>
     <task id="LOCAL-00001" summary="chore: Spring Legacy MyBatis 환경 설정">
       <option name="closed" value="true" />
@@ -211,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767019690281</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="chore: Spring Legacy MyBatis 환경 설정">
+      <option name="closed" value="true" />
+      <created>1767021708813</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1767021708813</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

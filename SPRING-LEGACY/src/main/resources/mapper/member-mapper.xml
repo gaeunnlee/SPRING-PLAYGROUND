@@ -18,7 +18,10 @@
     </insert>
 
     <update id="update" parameterType="org.crud_ex.domain.MemberVO">
-        UPDATE member SET name = #{name} WHERE userno = #{userno}
+        UPDATE member
+        SET name = #{name},
+            age  = #{age}
+        WHERE userno = #{userno}
     </update>
 
     <delete id="delete" parameterType="int">
