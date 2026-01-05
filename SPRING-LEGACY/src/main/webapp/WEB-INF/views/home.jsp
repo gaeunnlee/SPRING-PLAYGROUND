@@ -4,6 +4,6 @@
   <title>Title</title>
 </head>
 <body>
-<h1>Spring Legacy CRUD 시작!</h1>
+<h1>항공권 검색 API 구현</h1>
 </body>
 </html>
