@@ -3,6 +3,7 @@ package org.crud_ex.config;
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.security.JwtAuthFilter;
 import org.crud_ex.security.JwtProvider;
+import org.crud_ex.security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,13 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final JwtProvider jwtProvider;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // DB 기반 로그인(formLogin)용
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -55,21 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // 개발 중만 disable, 운영에서는 경로별로 켜는 걸 권장
                 .csrf().disable()
 
                 .authorizeRequests()
-
                 .antMatchers("/error").permitAll()
                 .antMatchers("/login", "/loginProc").permitAll()
-
-
                 .antMatchers(HttpMethod.GET, "/members/new").permitAll()
                 .antMatchers(HttpMethod.POST, "/members").permitAll()
 
-
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/admin/**").permitAll()
 
                 .antMatchers("/api/**").authenticated()
 
@@ -78,13 +73,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
 
-
+                // JSP 로그인(세션)
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/loginProc")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/members", true)
+                .successHandler(loginSuccessHandler)
                 .permitAll()
                 .and()
 
