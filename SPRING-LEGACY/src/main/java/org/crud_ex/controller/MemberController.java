@@ -1,20 +1,19 @@
 package org.crud_ex.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.crud_ex.domain.MemberVO;
 import org.crud_ex.mapper.MemberMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/members")
+@RequiredArgsConstructor
 public class MemberController {
-
     private final MemberMapper memberMapper;
-
-    public MemberController(MemberMapper memberMapper) {
-        this.memberMapper = memberMapper;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping({ "", "/" })
     public String list(Model model) {
@@ -31,12 +30,16 @@ public class MemberController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("member", new MemberVO());
-        return "member/new";
+        return "new";
     }
 
     @PostMapping
     public String insert(@ModelAttribute MemberVO member) {
+        String encodedPassword = passwordEncoder.encode(member.getPasswordHash());
+        member.setPasswordHash(encodedPassword);
+        member.setStatus("ACTIVE");
         memberMapper.insert(member);
+
         return "redirect:/members";
     }
 
