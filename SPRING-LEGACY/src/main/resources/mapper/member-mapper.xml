@@ -13,8 +13,21 @@
         SELECT * FROM member WHERE userno = #{userno}
     </select>
 
-    <insert id="insert" parameterType="org.crud_ex.domain.MemberVO">
-        INSERT INTO member(userno, name, age) VALUES (#{userno}, #{name}, #{age})
+    <select id="findByEmail" parameterType="string" resultType="org.crud_ex.domain.MemberVO">
+        SELECT
+            userno,
+            email,
+            password_hash AS passwordHash,
+            name,
+            age,
+            status
+        FROM member
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insert" parameterType="org.crud_ex.domain.MemberVO" useGeneratedKeys="true" keyProperty="userno">
+        INSERT INTO member(email, password_hash, name, age, status)
+        VALUES(#{email}, #{passwordHash}, #{name}, #{age}, 'ACTIVE')
     </insert>
 
     <update id="update" parameterType="org.crud_ex.domain.MemberVO">

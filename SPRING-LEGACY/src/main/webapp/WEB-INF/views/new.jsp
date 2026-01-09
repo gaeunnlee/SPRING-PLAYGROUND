@@ -15,8 +15,17 @@
 <h2>회원 등록</h2>
 
 <form action="${pageContext.request.contextPath}/members" method="post">
+
+
+  <label>email</label>
+  <input type="text" name="email" required /><br/><br/>
+
+
+  <label>password</label>
+  <input type="password" name="passwordHash" required />
+
   <label>name</label>
-  <input type="text" name="name" required />
+  <input type="text" name="name" required /><br/><br/>
 
   <label>age</label>
   <input type="number" name="age" min="0" required />
