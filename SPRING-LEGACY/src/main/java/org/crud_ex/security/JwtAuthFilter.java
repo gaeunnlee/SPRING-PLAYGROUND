@@ -28,7 +28,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
         String ctx = request.getContextPath();
-        return !uri.startsWith(ctx + "/api/");
+        String path = (ctx != null && !ctx.isEmpty()) ? uri.substring(ctx.length()) : uri;
+
+        if (!path.startsWith("/api/")) return true;
+        if (path.startsWith("/api/admin/")) return true;
+        return false;
     }
 
     @Override
@@ -38,47 +42,44 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws ServletException, IOException {
 
-        Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (existingAuth != null && existingAuth.isAuthenticated()) {
+        // 이미 인증된 경우(다른 인증이 세팅된 경우)면 그대로 통과
+        Authentication existing = SecurityContextHolder.getContext().getAuthentication();
+        if (existing != null && existing.isAuthenticated()) {
             chain.doFilter(req, res);
             return;
         }
 
-        String token = extractTokenFromCookie(req);
+        String token = extractAccessToken(req);
 
-        if (token != null) {
-            try {
-                String email = jwtProvider.parse(token)
-                        .getPayload()
-                        .getSubject();
-
-                UserDetails user = userDetailsService.loadUserByUsername(email);
-
-                Authentication auth =
-                        new UsernamePasswordAuthenticationToken(
-                                user, null, user.getAuthorities()
-                        );
-
-                SecurityContextHolder.getContext().setAuthentication(auth);
-
-            } catch (Exception e) {
-                SecurityContextHolder.clearContext();
-            }
+        // /api/** 인데 토큰이 없으면 → 401
+        if (token == null || token.isBlank()) {
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
 
-        chain.doFilter(req, res);
+        try {
+            String email = jwtProvider.parse(token).getPayload().getSubject();
+            UserDetails user = userDetailsService.loadUserByUsername(email);
+
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    user, null, user.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            chain.doFilter(req, res);
+
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
     }
 
-    /**
-     * accessToken 쿠키에서 JWT 추출
-     */
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
+    private String extractAccessToken(HttpServletRequest req) {
+        Cookie[] cookies = req.getCookies();
         if (cookies == null) return null;
-
-        for (Cookie cookie : cookies) {
-            if ("accessToken".equals(cookie.getName())) {
-                return cookie.getValue();
+        for (Cookie c : cookies) {
+            if ("accessToken".equals(c.getName())) {
+                return c.getValue();
             }
         }
         return null;
