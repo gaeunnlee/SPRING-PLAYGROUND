@@ -33,6 +33,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         cookie.setMaxAge(15 * 60); // 15분 (TTL)
         response.addCookie(cookie);
 
+        // SameSite Cookie 설정
+        response.addHeader(
+                "Set-Cookie",
+                "accessToken=" + token + "; SameSite=Lax"
+        );
+
         response.sendRedirect(request.getContextPath() + "/members");
     }
 }

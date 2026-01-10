@@ -1,5 +1,7 @@
 package org.crud_ex.security;
 
+import org.crud_ex.security.handler.JwtAuthenticationEntryPoint;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +20,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    public JwtAuthFilter(JwtProvider jwtProvider, UserDetailsService userDetailsService) {
+    public JwtAuthFilter(
+            JwtProvider jwtProvider,
+            UserDetailsService userDetailsService,
+            JwtAuthenticationEntryPoint authenticationEntryPoint
+    ) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Override
@@ -42,7 +50,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws ServletException, IOException {
 
-        // 이미 인증된 경우(다른 인증이 세팅된 경우)면 그대로 통과
         Authentication existing = SecurityContextHolder.getContext().getAuthentication();
         if (existing != null && existing.isAuthenticated()) {
             chain.doFilter(req, res);
@@ -51,9 +58,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = extractAccessToken(req);
 
-        // /api/** 인데 토큰이 없으면 → 401
         if (token == null || token.isBlank()) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            chain.doFilter(req, res);
             return;
         }
 
@@ -70,7 +76,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+
+            authenticationEntryPoint.commence(
+                    req,
+                    res,
+                    new BadCredentialsException("Invalid JWT", e)
+            );
         }
     }
 
