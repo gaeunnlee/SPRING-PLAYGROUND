@@ -19,13 +19,13 @@
 </c:if>
 
 <c:if test="${not empty member}">
-  <div class="row">userno: <b><c:out value="${member.userno}"/></b></div>
+  <div class="row">userno: <b><c:out value="${member.memberId}"/></b></div>
   <div class="row">name: <b><c:out value="${member.name}"/></b></div>
   <div class="row">age: <b><c:out value="${member.age}"/></b></div>
 
-  <a class="btn" href="${pageContext.request.contextPath}/members/${member.userno}/edit">수정</a>
+  <a class="btn" href="${pageContext.request.contextPath}/members/${member.memberId}/edit">수정</a>
 
-  <form action="${pageContext.request.contextPath}/members/${member.userno}/delete"
+  <form action="${pageContext.request.contextPath}/members/${member.memberId}/delete"
         method="post" style="display:inline;">
     <button class="btn" type="submit" onclick="return confirm('삭제할까요?');">삭제</button>
   </form>

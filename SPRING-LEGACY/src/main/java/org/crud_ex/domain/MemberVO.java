@@ -10,10 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberVO {
-    private int userno;
-    private String name;
-    private int age;
-    private String status; // ACTIVE / BLOCKED
+    private String memberId;
     private String passwordHash;
+
+    private String name;
     private String email;
+    private int age;
+
+    private String status; // ACTIVE / BLOCKED
+
+    private String oauthProvider;
+    private String oauthId;
 }

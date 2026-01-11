@@ -24,8 +24,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             Authentication authentication
     ) throws IOException {
 
-        String email = authentication.getName();
-        String token = jwtProvider.createAccessToken(email);
+        String memberId = authentication.getName();
+        String token = jwtProvider.createAccessToken(memberId);
 
         Cookie cookie = new Cookie("accessToken", token);
         cookie.setHttpOnly(true);

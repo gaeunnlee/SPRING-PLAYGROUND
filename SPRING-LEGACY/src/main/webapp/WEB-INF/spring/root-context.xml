@@ -28,6 +28,11 @@
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath:mapper/**/*.xml" />
         <property name="typeAliasesPackage" value="org.crud_ex.domain" />
+        <property name="configuration">
+            <bean class="org.apache.ibatis.session.Configuration">
+                <property name="mapUnderscoreToCamelCase" value="true"/>
+            </bean>
+        </property>
     </bean>
 
     <!-- SqlSessionTemplate: MyBatis 실행 -->

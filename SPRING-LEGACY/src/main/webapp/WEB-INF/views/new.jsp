@@ -15,7 +15,7 @@
 <h2>회원 등록</h2>
 
 <form action="${pageContext.request.contextPath}/members" method="post">
-
+  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
   <label>email</label>
   <input type="text" name="email" required /><br/><br/>

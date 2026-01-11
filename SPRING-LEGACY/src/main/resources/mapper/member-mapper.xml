@@ -9,13 +9,21 @@
         SELECT * FROM member
     </select>
 
-    <select id="findByUserno" parameterType="int" resultType="org.crud_ex.domain.MemberVO">
-        SELECT * FROM member WHERE userno = #{userno}
+    <select id="findByMemberId" parameterType="string" resultType="org.crud_ex.domain.MemberVO">
+        SELECT
+            member_id AS memberId,
+            email,
+            password_hash AS passwordHash,
+            name,
+            age,
+            status
+        FROM member
+        WHERE member_id = #{memberId}
     </select>
 
     <select id="findByEmail" parameterType="string" resultType="org.crud_ex.domain.MemberVO">
         SELECT
-            userno,
+            member_id AS memberId,
             email,
             password_hash AS passwordHash,
             name,
@@ -25,20 +33,20 @@
         WHERE email = #{email}
     </select>
 
-    <insert id="insert" parameterType="org.crud_ex.domain.MemberVO" useGeneratedKeys="true" keyProperty="userno">
-        INSERT INTO member(email, password_hash, name, age, status)
-        VALUES(#{email}, #{passwordHash}, #{name}, #{age}, 'ACTIVE')
+    <insert id="insert" parameterType="org.crud_ex.domain.MemberVO">
+        INSERT INTO member(member_id, email, password_hash, name, age, status)
+        VALUES(#{memberId}, #{email}, #{passwordHash}, #{name}, #{age}, 'ACTIVE')
     </insert>
 
     <update id="update" parameterType="org.crud_ex.domain.MemberVO">
         UPDATE member
         SET name = #{name},
             age  = #{age}
-        WHERE userno = #{userno}
+        WHERE member_id = #{memberId}
     </update>
 
-    <delete id="delete" parameterType="int">
-        DELETE FROM member WHERE userno = #{userno}
+    <delete id="delete" parameterType="string">
+        DELETE FROM member WHERE member_id = #{memberId}
     </delete>
 
 </mapper>

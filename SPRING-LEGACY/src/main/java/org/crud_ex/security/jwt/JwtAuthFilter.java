@@ -52,8 +52,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 throw new BadCredentialsException("Invalid JWT");
             }
 
-            String email = jwtProvider.getSubject(token);
-            UserDetails user = userDetailsService.loadUserByUsername(email);
+            String memberId = jwtProvider.getSubject(token);
+            UserDetails user = userDetailsService.loadUserByUsername(memberId);
 
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     user, null, user.getAuthorities()

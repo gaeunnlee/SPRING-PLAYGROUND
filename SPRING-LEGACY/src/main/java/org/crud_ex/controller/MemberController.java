@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/members")
 @RequiredArgsConstructor
@@ -21,9 +23,9 @@ public class MemberController {
         return "member/list";
     }
 
-    @GetMapping("/{userno}")
-    public String detail(@PathVariable int userno, Model model) {
-        model.addAttribute("member", memberMapper.findByUserno(userno));
+    @GetMapping("/{memberId}")
+    public String detail(@PathVariable String memberId, Model model) {
+        model.addAttribute("member", memberMapper.findByMemberId(memberId));
         return "member/detail";
     }
 
@@ -36,6 +38,7 @@ public class MemberController {
     @PostMapping
     public String insert(@ModelAttribute MemberVO member) {
         String encodedPassword = passwordEncoder.encode(member.getPasswordHash());
+        member.setMemberId(UUID.randomUUID().toString());
         member.setPasswordHash(encodedPassword);
         member.setStatus("ACTIVE");
         memberMapper.insert(member);
@@ -43,22 +46,22 @@ public class MemberController {
         return "redirect:/members";
     }
 
-    @GetMapping("/{userno}/edit")
-    public String editForm(@PathVariable int userno, Model model) {
-        model.addAttribute("member", memberMapper.findByUserno(userno));
+    @GetMapping("/{memberId}/edit")
+    public String editForm(@PathVariable String memberId, Model model) {
+        model.addAttribute("member", memberMapper.findByMemberId(memberId));
         return "member/edit";
     }
 
-    @PostMapping("/{userno}/edit")
-    public String update(@PathVariable int userno, @ModelAttribute MemberVO member) {
-        member.setUserno(userno);
+    @PostMapping("/{memberId}/edit")
+    public String update(@PathVariable String memberId, @ModelAttribute MemberVO member) {
+        member.setMemberId(memberId);
         memberMapper.update(member);
-        return "redirect:/members/" + userno;
+        return "redirect:/members/" + memberId;
     }
 
-    @PostMapping("/{userno}/delete")
-    public String delete(@PathVariable int userno) {
-        memberMapper.delete(userno);
+    @PostMapping("/{memberId}/delete")
+    public String delete(@PathVariable String memberId) {
+        memberMapper.delete(memberId);
         return "redirect:/members";
     }
 }

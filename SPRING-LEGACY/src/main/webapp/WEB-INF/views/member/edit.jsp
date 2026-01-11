@@ -21,9 +21,9 @@
 </c:if>
 
 <c:if test="${not empty member}">
-  <form action="${pageContext.request.contextPath}/members/${member.userno}/edit" method="post">
-    <label>userno</label>
-    <input type="text" value="<c:out value='${member.userno}'/>" readonly />
+  <form action="${pageContext.request.contextPath}/members/${member.memberId}/edit" method="post">
+    <label>memberId</label>
+    <input type="text" value="<c:out value='${member.memberId}'/>" readonly />
 
     <label>name</label>
     <input type="text" name="name" value="<c:out value='${member.name}'/>" required />
@@ -32,7 +32,7 @@
     <input type="number" name="age" min="0" value="<c:out value='${member.age}'/>" required />
 
     <button class="btn" type="submit">저장</button>
-    <a class="link" href="${pageContext.request.contextPath}/members/${member.userno}">취소</a>
+    <a class="link" href="${pageContext.request.contextPath}/members/${member.memberId}">취소</a>
   </form>
 </c:if>
 </body>

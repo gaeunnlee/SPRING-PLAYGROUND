@@ -24,7 +24,7 @@
 <table>
     <thead>
     <tr>
-        <th>userno</th>
+        <th>memberId</th>
         <th>name</th>
         <th>age</th>
         <th>action</th>
@@ -33,17 +33,17 @@
     <tbody>
     <c:forEach var="m" items="${members}">
         <tr>
-            <td><c:out value="${m.userno}"/></td>
+            <td><c:out value="${m.memberId}"/></td>
             <td>
-                <a href="${pageContext.request.contextPath}/members/${m.userno}">
+                <a href="${pageContext.request.contextPath}/members/${m.memberId}">
                     <c:out value="${m.name}"/>
                 </a>
             </td>
             <td><c:out value="${m.age}"/></td>
             <td>
-                <a class="btn" href="${pageContext.request.contextPath}/members/${m.userno}/edit">수정</a>
+                <a class="btn" href="${pageContext.request.contextPath}/members/${m.memberId}/edit">수정</a>
 
-                <form action="${pageContext.request.contextPath}/members/${m.userno}/delete"
+                <form action="${pageContext.request.contextPath}/members/${m.memberId}/delete"
                       method="post" style="display:inline;">
                     <button class="btn" type="submit" onclick="return confirm('삭제할까요?');">삭제</button>
                 </form>

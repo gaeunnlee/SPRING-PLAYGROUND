@@ -14,10 +14,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberMapper memberMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        MemberVO member = memberMapper.findByEmail(email);
+    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
+        MemberVO member = memberMapper.findByMemberId(memberId);
         if (member == null) {
-            throw new UsernameNotFoundException("No user: " + email);
+            throw new UsernameNotFoundException("No member: " + memberId);
         }
         return new CustomUserDetails(member);
     }
