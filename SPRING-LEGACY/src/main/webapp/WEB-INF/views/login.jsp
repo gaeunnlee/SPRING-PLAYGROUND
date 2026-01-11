@@ -12,7 +12,7 @@
 <h2>로그인</h2>
 
 <form action="${pageContext.request.contextPath}/loginProc" method="post">
-
+  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   <div>
     <label>Email</label><br/>
     <input type="text" name="email" required />
