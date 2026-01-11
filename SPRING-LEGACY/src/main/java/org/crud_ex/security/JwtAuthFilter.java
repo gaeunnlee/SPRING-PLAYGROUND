@@ -1,5 +1,6 @@
 package org.crud_ex.security;
 
+import lombok.RequiredArgsConstructor;
 import org.crud_ex.security.handler.JwtAuthenticationEntryPoint;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,21 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
-
-    public JwtAuthFilter(
-            JwtProvider jwtProvider,
-            UserDetailsService userDetailsService,
-            JwtAuthenticationEntryPoint authenticationEntryPoint
-    ) {
-        this.jwtProvider = jwtProvider;
-        this.userDetailsService = userDetailsService;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-    }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -39,8 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = (ctx != null && !ctx.isEmpty()) ? uri.substring(ctx.length()) : uri;
 
         if (!path.startsWith("/api/")) return true;
-        if (path.startsWith("/api/admin/")) return true;
-        return false;
+        return path.startsWith("/api/admin/");
     }
 
     @Override
@@ -49,13 +40,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse res,
             FilterChain chain
     ) throws ServletException, IOException {
-
-        Authentication existing = SecurityContextHolder.getContext().getAuthentication();
-        if (existing != null && existing.isAuthenticated()) {
-            chain.doFilter(req, res);
-            return;
-        }
-
         String token = extractAccessToken(req);
 
         if (token == null || token.isBlank()) {
@@ -64,7 +48,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         try {
-            String email = jwtProvider.parse(token).getPayload().getSubject();
+            if (!jwtProvider.validate(token)) {
+                throw new BadCredentialsException("Invalid JWT");
+            }
+
+            String email = jwtProvider.getSubject(token);
             UserDetails user = userDetailsService.loadUserByUsername(email);
 
             Authentication auth = new UsernamePasswordAuthenticationToken(
@@ -74,14 +62,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             chain.doFilter(req, res);
 
-        } catch (Exception e) {
+        } catch (BadCredentialsException e) { // JWT 문제 401
             SecurityContextHolder.clearContext();
-
-            authenticationEntryPoint.commence(
-                    req,
-                    res,
-                    new BadCredentialsException("Invalid JWT", e)
-            );
+            authenticationEntryPoint.commence(req, res, e);
         }
     }
 

@@ -44,4 +44,28 @@ public class JwtProvider {
                 .build()
                 .parseSignedClaims(token);
     }
+
+    // 서명/만료 검증
+    public boolean validate(String token) {
+        try {
+            parse(token); // verifyWith(key) + exp 포함 검증
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // subject(=userId/email)만 꺼내기
+    public String getSubject(String token) {
+        return parse(token).getPayload().getSubject();
+    }
+
+    public Date getExpiration(String token) {
+        return parse(token).getPayload().getExpiration();
+    }
+
+    public boolean isExpired(String token) {
+        Date exp = getExpiration(token);
+        return exp.before(new Date());
+    }
 }
