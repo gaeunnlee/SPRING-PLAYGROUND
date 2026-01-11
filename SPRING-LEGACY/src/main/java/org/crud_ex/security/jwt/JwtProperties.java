@@ -1,4 +1,4 @@
-package org.crud_ex.config;
+package org.crud_ex.security.jwt;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

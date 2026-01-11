@@ -1,7 +1,7 @@
-package org.crud_ex.config;
+package org.crud_ex.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.crud_ex.security.LoginSuccessHandler;
+import org.crud_ex.security.handler.LoginSuccessHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;

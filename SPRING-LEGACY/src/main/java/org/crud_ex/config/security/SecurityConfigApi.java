@@ -1,7 +1,7 @@
-package org.crud_ex.config;
+package org.crud_ex.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.crud_ex.security.JwtAuthFilter;
+import org.crud_ex.security.jwt.JwtAuthFilter;
 import org.crud_ex.security.handler.JwtAccessDeniedHandler;
 import org.crud_ex.security.handler.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;

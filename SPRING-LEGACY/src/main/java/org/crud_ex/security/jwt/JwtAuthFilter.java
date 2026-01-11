@@ -1,4 +1,4 @@
-package org.crud_ex.security;
+package org.crud_ex.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.security.handler.JwtAuthenticationEntryPoint;

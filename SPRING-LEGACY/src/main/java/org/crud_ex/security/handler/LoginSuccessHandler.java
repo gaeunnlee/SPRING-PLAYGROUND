@@ -1,6 +1,7 @@
-package org.crud_ex.security;
+package org.crud_ex.security.handler;
 
 import lombok.RequiredArgsConstructor;
+import org.crud_ex.security.jwt.JwtProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;

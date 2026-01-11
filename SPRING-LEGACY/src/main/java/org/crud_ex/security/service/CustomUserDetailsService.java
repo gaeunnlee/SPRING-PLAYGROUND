@@ -1,8 +1,9 @@
-package org.crud_ex.security;
+package org.crud_ex.security.service;
 
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.domain.MemberVO;
 import org.crud_ex.mapper.MemberMapper;
+import org.crud_ex.security.principal.CustomUserDetails;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 

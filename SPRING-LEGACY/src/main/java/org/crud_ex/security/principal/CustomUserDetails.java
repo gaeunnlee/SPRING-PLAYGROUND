@@ -1,4 +1,4 @@
-package org.crud_ex.security;
+package org.crud_ex.security.principal;
 
 import org.crud_ex.domain.MemberVO;
 import org.springframework.security.core.GrantedAuthority;
