@@ -2,6 +2,7 @@ package org.crud_ex.security.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.security.jwt.JwtProvider;
+import org.crud_ex.security.principal.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             Authentication authentication
     ) throws IOException {
 
-        String memberId = authentication.getName();
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        String memberId = principal.getMemberId();
         String token = jwtProvider.createAccessToken(memberId);
 
         Cookie cookie = new Cookie("accessToken", token);

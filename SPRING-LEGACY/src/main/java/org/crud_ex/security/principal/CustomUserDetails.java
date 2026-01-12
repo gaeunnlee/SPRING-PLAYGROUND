@@ -19,6 +19,8 @@ public class CustomUserDetails implements UserDetails {
         return member;
     }
 
+    public String getMemberId() { return member.getMemberId(); }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();

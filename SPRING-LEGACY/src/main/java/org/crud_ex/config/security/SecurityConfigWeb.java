@@ -2,6 +2,7 @@ package org.crud_ex.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.security.handler.LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -16,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Order(2)
 @RequiredArgsConstructor
 public class SecurityConfigWeb extends WebSecurityConfigurerAdapter {
-
-    private final UserDetailsService userDetailsService;
+    @Qualifier("emailUserDetailsService")
+    private final UserDetailsService emailUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final LoginSuccessHandler loginSuccessHandler;
 
@@ -35,7 +36,7 @@ public class SecurityConfigWeb extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService)
+                .userDetailsService(emailUserDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 

@@ -1,9 +1,11 @@
 package org.crud_ex.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.crud_ex.security.jwt.JwtAuthFilter;
 import org.crud_ex.security.handler.JwtAccessDeniedHandler;
 import org.crud_ex.security.handler.JwtAuthenticationEntryPoint;
+import org.crud_ex.security.jwt.JwtAuthFilter;
+import org.crud_ex.security.jwt.JwtProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -20,9 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfigApi extends WebSecurityConfigurerAdapter {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    private final JwtProvider jwtProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Qualifier("memberIdUserDetailsService")
+    private final UserDetailsService memberIdUserDetailsService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -37,6 +43,8 @@ public class SecurityConfigApi extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JwtAuthFilter jwtAuthFilter =
+                new JwtAuthFilter(jwtProvider, memberIdUserDetailsService, jwtAuthenticationEntryPoint);
         http
                 .antMatcher("/api/**")
                 .sessionManagement()
