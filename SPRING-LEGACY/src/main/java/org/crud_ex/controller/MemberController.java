@@ -3,12 +3,11 @@ package org.crud_ex.controller;
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.domain.MemberVO;
 import org.crud_ex.mapper.MemberMapper;
+import org.crud_ex.service.MemberService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/members")
@@ -16,6 +15,7 @@ import java.util.UUID;
 public class MemberController {
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
+    private final MemberService memberService;
 
     @GetMapping({ "", "/" })
     public String list(Model model) {
@@ -37,12 +37,7 @@ public class MemberController {
 
     @PostMapping
     public String insert(@ModelAttribute MemberVO member) {
-        String encodedPassword = passwordEncoder.encode(member.getPasswordHash());
-        member.setMemberId(UUID.randomUUID().toString());
-        member.setPasswordHash(encodedPassword);
-        member.setStatus("ACTIVE");
-        memberMapper.insert(member);
-
+        memberService.registerLocal(member);
         return "redirect:/members";
     }
 
