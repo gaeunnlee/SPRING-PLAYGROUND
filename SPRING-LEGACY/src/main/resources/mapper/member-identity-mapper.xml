@@ -20,4 +20,20 @@
                 NOW())
     </insert>
 
+    <select id="findMemberByProviderAndUserId" resultType="org.crud_ex.domain.MemberVO">
+        SELECT
+            m.member_id,
+            m.email,
+            m.password_hash AS passwordHash,
+            m.name,
+            m.age,
+            m.status
+        FROM member_identity mi
+                 JOIN member m ON m.member_id = mi.member_id
+        WHERE mi.provider = #{provider}
+          AND mi.provider_user_id = #{providerUserId}
+            LIMIT 1
+    </select>
+
+
 </mapper>

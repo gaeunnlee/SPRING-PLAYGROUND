@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.crud_ex.domain.MemberVO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -14,4 +15,5 @@ public interface MemberMapper {
     int insert(MemberVO member);
     int update(MemberVO member);
     int delete(String memberId);
+    LocalDateTime findCreatedAtById(String memberId);
 }

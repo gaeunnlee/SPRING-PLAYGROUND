@@ -9,6 +9,26 @@
         SELECT * FROM member
     </select>
 
+    <select id="findCreatedAtById" parameterType="string" resultType="java.time.LocalDateTime">
+        SELECT created_at
+        FROM member
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findByProviderAndUserId"
+            resultType="org.crud_ex.domain.MemberIdentityVO">
+        SELECT
+            member_identity_id,
+            member_id,
+            provider,
+            provider_user_id,
+            created_at
+        FROM member_identity
+        WHERE provider = #{provider}
+          AND provider_user_id = #{providerUserId}
+            LIMIT 1
+    </select>
+
     <select id="findByMemberId" parameterType="string" resultType="org.crud_ex.domain.MemberVO">
         SELECT
             member_id AS memberId,
