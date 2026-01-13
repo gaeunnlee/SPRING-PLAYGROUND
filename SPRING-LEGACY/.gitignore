@@ -39,3 +39,4 @@ build/
 
 # IntelliJ IDEA
 .idea/
+application.properties
