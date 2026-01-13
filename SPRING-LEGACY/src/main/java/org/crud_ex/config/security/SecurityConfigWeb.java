@@ -47,7 +47,7 @@ public class SecurityConfigWeb extends WebSecurityConfigurerAdapter {
                 .antMatchers("/error").permitAll()
                 .antMatchers("/", "/login", "/loginProc", "/members").permitAll()
                 .antMatchers(HttpMethod.GET, "/members/new").permitAll()
-                .antMatchers(HttpMethod.POST, "/members").permitAll()
+                .antMatchers("/auth/**").permitAll()
 
                 .anyRequest().authenticated()
                 .and()

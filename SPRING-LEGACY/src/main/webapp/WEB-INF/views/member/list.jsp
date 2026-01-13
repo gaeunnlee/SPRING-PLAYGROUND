@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,14 @@
 </head>
 <body>
 <h2>회원 목록</h2>
+<div class="top">
+    <b>로그인:</b> ${loginMember.name} (${loginMember.createdAt})
 
+</div>
+로그인 name: ${pageContext.request.remoteUser}<br/>
+<p>principal: ${pageContext.request.userPrincipal}</p>
+<p>remoteUser: ${pageContext.request.remoteUser}</p>
+<p>authType: ${pageContext.request.authType}</p>
 <div class="top">
     <a class="btn" href="${pageContext.request.contextPath}/members/new">+ 신규 등록</a>
 </div>

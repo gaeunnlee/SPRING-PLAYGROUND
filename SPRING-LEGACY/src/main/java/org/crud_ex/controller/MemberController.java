@@ -3,11 +3,16 @@ package org.crud_ex.controller;
 import lombok.RequiredArgsConstructor;
 import org.crud_ex.domain.MemberVO;
 import org.crud_ex.mapper.MemberMapper;
+import org.crud_ex.security.principal.CustomUserDetails;
 import org.crud_ex.service.MemberService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/members")
@@ -20,6 +25,19 @@ public class MemberController {
     @GetMapping({ "", "/" })
     public String list(Model model) {
         model.addAttribute("members", memberMapper.findAll());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        LocalDateTime createdAt = null;
+        MemberVO loginMember = null;
+
+        if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof CustomUserDetails user) {
+            loginMember = user.getMember();
+            createdAt = memberMapper.findCreatedAtById(loginMember.getMemberId());
+            loginMember.setCreatedAt(createdAt);
+        }
+
+        model.addAttribute("loginMember", loginMember);
         return "member/list";
     }
 
